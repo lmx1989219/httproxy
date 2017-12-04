@@ -34,7 +34,7 @@ echo $CLASSPATH
 
 
 if [ ! -f "$APP_PID" ]; then
-        java -classpath ${CLASSPATH} com.lmx.httproxy.ProxyServer 2>&1 &
+        java -classpath ${CLASSPATH} -Dproxy.port=8888 com.lmx.httproxy.ProxyServer 2>&1 &
         PID=$!
         echo $PID > $APP_PID
 else

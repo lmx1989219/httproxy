@@ -12,13 +12,13 @@ import io.netty.handler.logging.LoggingHandler;
  * Created by limingxin on 2017/11/9.
  */
 public class ProxyServer {
-    static final int LOCAL_PORT = Integer.parseInt(System.getProperty("port", "18888"));
+    static final int LOCAL_PORT = Integer.parseInt(System.getProperty("proxy.port", "18888"));
 
     public static void main(String[] args) throws Exception {
-        System.err.println("Proxying *:" + LOCAL_PORT);
+        System.out.println("Proxying *:" + LOCAL_PORT);
         // Configure the bootstrap.
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(4);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2);
         ServerBootstrap b_ = new ServerBootstrap();
         try {
             b_.group(bossGroup, workerGroup)
