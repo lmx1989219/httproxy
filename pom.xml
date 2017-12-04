@@ -23,6 +23,17 @@
 
     <build>
         <plugins>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.lmx.httproxy.ProxyServer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -30,11 +41,7 @@
                     <descriptors>
                         <descriptor>src/main/resources/assembly.xml</descriptor>
                     </descriptors>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.lmx.httproxy.ProxyServer</mainClass>
-                        </manifest>
-                    </archive>
+
                 </configuration>
                 <executions>
                     <execution>

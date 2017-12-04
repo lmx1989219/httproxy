@@ -12,7 +12,7 @@ import io.netty.handler.logging.LoggingHandler;
  * Created by limingxin on 2017/11/9.
  */
 public class ProxyServer {
-    static final int LOCAL_PORT = Integer.parseInt(System.getProperty("127.0.0.1", "18888"));
+    static final int LOCAL_PORT = Integer.parseInt(System.getProperty("port", "18888"));
 
     public static void main(String[] args) throws Exception {
         System.err.println("Proxying *:" + LOCAL_PORT);

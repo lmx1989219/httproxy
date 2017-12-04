@@ -2,7 +2,7 @@
 PRG="$0"
 
 #JAVA_HOME=/usr/bin/java
-APP_HOME=../
+APP_HOME=.
 CLASSPATH=$APP_HOME
 
 for i in "$APP_HOME"/lib/*.jar; do
@@ -30,8 +30,11 @@ PRGDIR=`dirname "$PRG"`
 [ -z "$APP_PID" ] && APP_PID=$APP_HOME/pid
 
 
+echo $CLASSPATH
+
+
 if [ ! -f "$APP_PID" ]; then
-        java classpath ${CLASSPATH} $JVM_ARGS   com.lmx.httproxy.ProxyServer 2>&1 &
+        java -classpath ${CLASSPATH} com.lmx.httproxy.ProxyServer 2>&1 &
         PID=$!
         echo $PID > $APP_PID
 else
