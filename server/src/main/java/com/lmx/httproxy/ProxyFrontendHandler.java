@@ -62,21 +62,24 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
                 }
             }
             if ("CONNECT".equalsIgnoreCase(req.method().name())) {
-                //伪造一个ssl通道建立请求
-                HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, SUCCESS);
-                inboundChannel.writeAndFlush(response).addListener(new ChannelFutureListener() {
-                    public void operationComplete(ChannelFuture future) {
-                        if (future.isSuccess()) {
-                            //建立连接后开始准备读ssl的密文
-                            ctx.read();
-                        } else {
-                            future.channel().close();
-                        }
-                    }
-                });
+//                //伪造一个ssl通道建立请求
+//                HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, SUCCESS);
+//                inboundChannel.writeAndFlush(response).addListener(new ChannelFutureListener() {
+//                    public void operationComplete(ChannelFuture future) {
+//                        if (future.isSuccess()) {
+//                            //建立连接后开始准备读ssl的密文
+//                            ctx.read();
+//                        } else {
+//                            future.channel().close();
+//                        }
+//                    }
+//                });
                 //删除http编解码，后续请求直接透传
+                inboundChannel.pipeline().remove("https");
                 inboundChannel.pipeline().remove("codec");
                 inboundChannel.pipeline().remove("aggregator");
+                //直接读密文
+                ctx.read();
             } else {
                 outboundChannel.pipeline().
                         addFirst("agg", new HttpObjectAggregator(Integer.MAX_VALUE)).addFirst("cc", new HttpClientCodec());
