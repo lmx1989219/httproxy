@@ -30,6 +30,7 @@ public class ProxyBackendHandler extends ChannelInboundHandlerAdapter {
                     if (future.isSuccess()) {
                         //开始处理握手信息，直到透传任何数据请求
                         ctx.read();
+                        inboundChannel.read();
                     } else {
                         future.channel().close();
                     }

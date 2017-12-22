@@ -36,7 +36,7 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
                 .handler(new ChannelInitializer() {
                     protected void initChannel(Channel ch) throws Exception {
                         ch.pipeline().
-                                addLast("https", sslContext.newHandler(ch.alloc())).
+                                /*addLast("https", sslContext.newHandler(ch.alloc())).*/
                                 addLast("codec", new HttpClientCodec()).
                                 addLast("aggregator", new HttpObjectAggregator(Integer.MAX_VALUE)).
                                 addLast(new LoggingHandler(LogLevel.DEBUG)).
@@ -76,14 +76,14 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
                                         inboundChannel.pipeline().remove("codec");
                                         inboundChannel.pipeline().remove("aggregator");
                                         //建立连接后开始准备读ssl的密文
-                                        ctx.read();
+                                        inboundChannel.read();
                                     } else {
                                         future.channel().close();
                                     }
                                 }
                             });
 
-                            outboundChannel.pipeline().remove("https");
+//                            outboundChannel.pipeline().remove("https");
                             outboundChannel.pipeline().remove("codec");
                             outboundChannel.pipeline().remove("aggregator");
                         } else {
@@ -107,7 +107,7 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
                 public void operationComplete(ChannelFuture future) {
                     if (future.isSuccess()) {
                         //client开始处理握手信息，直到透传任何数据请求
-                        ctx.read();
+                        //ctx.read();
                     } else {
                         future.channel().close();
                     }

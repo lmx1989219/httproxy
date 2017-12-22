@@ -23,8 +23,8 @@ public class ProxyInitializer extends ChannelInitializer<SocketChannel> {
         SelfSignedCertificate ssc = new SelfSignedCertificate();
         SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey())
                 .build();
-        ch.pipeline().
-                addLast("https", sslCtx.newHandler(ch.alloc())).
+        ch.pipeline()./*
+                addLast("https", sslCtx.newHandler(ch.alloc())).*/
                 addLast("codec", new HttpServerCodec()).
                 addLast("aggregator", new HttpObjectAggregator(Integer.MAX_VALUE)).
                 addLast("log", new LoggingHandler(LogLevel.DEBUG)).
