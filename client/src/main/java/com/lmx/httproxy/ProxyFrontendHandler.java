@@ -37,7 +37,7 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
                     protected void initChannel(Channel ch) throws Exception {
                         ch.pipeline().
                                 /*addLast("https", sslContext.newHandler(ch.alloc())).*/
-                                addLast("codec", new HttpClientCodec()).
+                                        addLast("codec", new HttpClientCodec()).
                                 addLast("aggregator", new HttpObjectAggregator(Integer.MAX_VALUE)).
                                 addLast(new LoggingHandler(LogLevel.DEBUG)).
                                 addLast(new ProxyBackendHandler(ctx.channel()));
@@ -64,6 +64,7 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
             final Channel inboundChannel = ctx.channel();
             if ("CONNECT".equalsIgnoreCase(req.method().name())) {
                 //远程代理服务建立
+                //TODO 对https隧道消息加密 绕过GFW的敏感检测
                 outboundChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
                     public void operationComplete(ChannelFuture future) {
                         if (future.isSuccess()) {
@@ -106,8 +107,9 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
             outboundChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
                 public void operationComplete(ChannelFuture future) {
                     if (future.isSuccess()) {
-                        //client开始处理握手信息，直到透传任何数据请求
-                        //ctx.read();
+                        //client和中转程序都要开始处理握手信息，直到透传任何数据请求
+                        ctx.read();
+                        outboundChannel.read();
                     } else {
                         future.channel().close();
                     }
@@ -125,7 +127,7 @@ public class ProxyFrontendHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+//        cause.printStackTrace();
         closeOnFlush(ctx.channel());
     }
 

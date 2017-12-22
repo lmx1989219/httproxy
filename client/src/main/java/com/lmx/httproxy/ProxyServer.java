@@ -17,7 +17,7 @@ public class ProxyServer {
     static final int REMOTE_PORT = Integer.parseInt(System.getProperty("remote.port", "18888"));
 
     public static void main(String[] args) throws Exception {
-        System.err.println("Client Proxying *:" + LOCAL_PORT);
+        System.err.println("Client Proxying local Port on :" + LOCAL_PORT + " to remote host " + REMOTE_HOST + " port " + REMOTE_PORT);
         // Configure the bootstrap.
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(4);

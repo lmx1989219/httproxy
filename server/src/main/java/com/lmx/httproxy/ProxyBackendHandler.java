@@ -48,7 +48,7 @@ public class ProxyBackendHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+//        cause.printStackTrace();
         ProxyFrontendHandler.closeOnFlush(ctx.channel());
     }
 }
