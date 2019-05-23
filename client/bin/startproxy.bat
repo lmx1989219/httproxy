@@ -1,0 +1,1 @@
+java -cp .;./lib/client-1.0-SNAPSHOT.jar;./lib/guava-18.0.jar;./lib/netty-all-4.1.15.Final.jar -Dremote.host=172.16.0.164 com.lmx.httproxy.ProxyServer 
